@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nekretnine.me — Montenegro Real Estate</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafc; color: #0f172a; -webkit-font-smoothing: antialiased; }
+input, select, button { font-family: inherit; }
+button { cursor: pointer; }
+a { text-decoration: none; color: inherit; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+/* Nav */
+.nav { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 60px; position: sticky; top: 0; z-index: 100; }
+.nav-brand { font-size: 22px; font-weight: 800; color: #0e7490; letter-spacing: -0.5px; cursor: pointer; }
+.nav-links { display: flex; gap: 4px; }
+.nav-link { padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; background: transparent; color: #64748b; border: none; transition: all 0.15s; }
+.nav-link:hover { background: #f0f9ff; color: #0e7490; }
+.nav-link.active { background: #f0f9ff; color: #0e7490; }
+.lang-btn { padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; background: #f1f5f9; color: #64748b; border: none; transition: all 0.15s; }
+.lang-btn.active { background: #0e7490; color: #fff; }
+
+/* Hero */
+.hero { background: linear-gradient(135deg, #0e7490 0%, #0369a1 50%, #1e40af 100%); color: #fff; padding: 80px 24px; text-align: center; }
+.hero-title { font-size: 42px; font-weight: 800; letter-spacing: -1px; margin-bottom: 12px; }
+.hero-sub { font-size: 17px; opacity: 0.85; max-width: 560px; margin: 0 auto 32px; line-height: 1.6; }
+.search-bar { max-width: 600px; margin: 0 auto; display: flex; gap: 8px; background: rgba(255,255,255,0.15); border-radius: 12px; padding: 6px; }
+.search-input { flex: 1; padding: 12px 16px; border-radius: 8px; border: none; font-size: 15px; outline: none; background: #fff; color: #0f172a; }
+.search-btn { padding: 12px 24px; border-radius: 8px; border: none; background: #0f172a; color: #fff; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: 600; font-size: 14px; transition: background 0.15s; }
+.search-btn:hover { background: #1e293b; }
+
+/* Container */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+/* Section */
+.section { padding: 48px 0; }
+.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+.section-title { font-size: 22px; font-weight: 700; }
+.view-all-btn { font-size: 13px; color: #0e7490; cursor: pointer; font-weight: 500; background: none; border: none; }
+.view-all-btn:hover { text-decoration: underline; }
+
+/* Grid */
+.grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+.grid-agencies { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+
+/* Card */
+.card { background: #fff; border-radius: 12px; overflow: hidden; cursor: pointer; transition: all 0.2s; border: 1px solid #e2e8f0; }
+.card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.08); transform: translateY(-2px); }
+.card.compact { display: flex; }
+.card-image { position: relative; width: 100%; height: 200px; background-size: cover; background-position: center; }
+.card.compact .card-image { width: 200px; min-width: 200px; height: auto; min-height: 140px; }
+.card-badges { position: absolute; top: 10px; left: 10px; display: flex; gap: 6px; }
+.badge-deal { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #fff; }
+.badge-deal.sale { background: #0e7490; }
+.badge-deal.rent { background: #7c3aed; }
+.badge-type { background: rgba(255,255,255,0.9); color: #334155; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+.card-actions { position: absolute; top: 10px; right: 10px; display: flex; gap: 4px; }
+.action-btn { width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.15s; }
+.action-btn:hover { background: #fff; transform: scale(1.1); }
+.action-btn.comp-active { background: #0e7490; color: #fff; }
+.card-body { padding: 14px 16px; flex: 1; }
+.card-price { font-size: 20px; font-weight: 700; color: #0f172a; }
+.card-price span { font-size: 14px; font-weight: 400; color: #64748b; }
+.card-title { font-size: 13px; color: #475569; margin-top: 4px; font-weight: 500; }
+.card-location { display: flex; align-items: center; gap: 4px; margin-top: 6px; color: #64748b; font-size: 12px; }
+.card-stats { display: flex; gap: 12px; margin-top: 10px; color: #64748b; font-size: 12px; }
+.card-agency { margin-top: 10px; display: flex; align-items: center; gap: 6px; font-size: 11px; color: #94a3b8; }
+.agency-dot { width: 18px; height: 18px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; }
+
+/* Agency card */
+.agency-card { background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; cursor: pointer; transition: all 0.2s; }
+.agency-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+.agency-badge { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 10px; font-size: 22px; margin-bottom: 12px; }
+.agency-badge.lg { width: 60px; height: 60px; font-size: 32px; }
+
+/* Filter panel */
+.filter-panel { background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; margin-bottom: 20px; }
+.filter-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+.filter-group { display: flex; flex-direction: column; gap: 4px; }
+.filter-label { font-size: 11px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; }
+.filter-select, .filter-input { padding: 8px 12px; border-radius: 8px; border: 1px solid #e2e8f0; font-size: 13px; color: #334155; background: #fff; outline: none; min-width: 110px; }
+.filter-input { width: 100px; }
+.filter-select:focus, .filter-input:focus { border-color: #0e7490; }
+
+/* Buttons */
+.btn { padding: 8px 18px; border-radius: 8px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+.btn-primary { background: #0e7490; color: #fff; }
+.btn-primary:hover { background: #0c6577; }
+.btn-default { background: #f1f5f9; color: #475569; }
+.btn-default:hover { background: #e2e8f0; }
+.btn-ghost { background: transparent; color: #475569; }
+.btn-ghost:hover { background: #f1f5f9; }
+
+/* Toolbar */
+.toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.result-count { font-size: 14px; color: #64748b; }
+.result-count strong { color: #0f172a; }
+.view-toggle { display: flex; gap: 4px; background: #f1f5f9; border-radius: 8px; padding: 3px; }
+.view-btn { width: 32px; height: 32px; border-radius: 6px; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; background: transparent; color: #94a3b8; transition: all 0.15s; }
+.view-btn.active { background: #fff; color: #0e7490; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+/* Search page bar */
+.listings-search { display: flex; gap: 8px; margin-bottom: 16px; }
+.listings-search-wrap { flex: 1; position: relative; }
+.listings-search-wrap input { width: 100%; border: 1px solid #e2e8f0; padding-left: 40px; }
+.listings-search-wrap input:focus { border-color: #0e7490; }
+.listings-search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; display: flex; }
+.filter-toggle { display: flex; align-items: center; gap: 6px; }
+
+/* Map */
+.map-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.map-container { width: 100%; background: #f0f7ff; border-radius: 12px; overflow: hidden; position: relative; }
+.map-container svg { width: 100%; height: auto; display: block; }
+.map-legend { position: absolute; bottom: 12px; right: 12px; background: rgba(255,255,255,0.9); border-radius: 8px; padding: 6px 12px; display: flex; gap: 14px; font-size: 12px; color: #475569; }
+.map-legend-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.map-sidebar { max-height: 500px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+
+/* Detail page */
+.detail-back { background: none; border: none; font-size: 14px; color: #0e7490; cursor: pointer; font-weight: 500; margin-bottom: 16px; padding: 0; }
+.detail-back:hover { text-decoration: underline; }
+.detail-image { width: 100%; height: 360px; object-fit: cover; border-radius: 12px; }
+.detail-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-top: 24px; }
+.detail-badges { display: flex; gap: 8px; margin-bottom: 12px; }
+.detail-badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.detail-badge.sale { background: #ecfeff; color: #0e7490; }
+.detail-badge.rent { background: #f5f3ff; color: #7c3aed; }
+.detail-badge.type { background: #f1f5f9; color: #475569; font-weight: 500; }
+.detail-title { font-size: 28px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; }
+.detail-location { display: flex; align-items: center; gap: 4px; color: #64748b; font-size: 14px; margin-bottom: 20px; }
+.detail-price { font-size: 32px; font-weight: 800; color: #0e7490; margin-bottom: 24px; }
+.detail-price span { font-size: 16px; font-weight: 400; color: #94a3b8; }
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+.stat-box { background: #f8fafc; border-radius: 10px; padding: 16px 20px; text-align: center; }
+.stat-val { font-size: 22px; font-weight: 700; color: #0f172a; }
+.stat-label { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+
+/* Agency box */
+.agency-box { background: #fff; border-radius: 12px; padding: 24px; border: 1px solid #e2e8f0; }
+.agency-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.agency-desc { font-size: 13px; color: #475569; line-height: 1.6; margin-bottom: 16px; }
+.agency-contact { font-size: 13px; color: #475569; display: flex; flex-direction: column; gap: 6px; }
+.contact-btn { width: 100%; padding: 12px; border-radius: 8px; border: none; background: #0e7490; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 12px; transition: background 0.15s; }
+.contact-btn:hover { background: #0c6577; }
+.contact-btn.secondary { background: #f1f5f9; color: #334155; }
+.contact-btn.secondary:hover { background: #e2e8f0; }
+.detail-actions { margin-top: 16px; display: flex; gap: 8px; }
+.detail-actions .btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; }
+
+/* Compare */
+.compare-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; }
+.compare-table th { padding: 12px 16px; text-align: left; font-size: 12px; font-weight: 600; color: #94a3b8; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; }
+.compare-table td { padding: 12px 16px; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+.compare-table td:first-child { font-weight: 600; color: #64748b; font-size: 13px; }
+.compare-img { width: 100%; height: 100px; object-fit: cover; border-radius: 8px; margin-bottom: 8px; }
+.compare-name { font-size: 13px; font-weight: 600; color: #0f172a; }
+
+/* Empty state */
+.empty-state { text-align: center; padding: 80px 20px; color: #94a3b8; font-size: 15px; }
+
+/* CTA */
+.cta-banner { background: linear-gradient(135deg, #f0f9ff, #ede9fe); border-radius: 16px; padding: 40px 32px; text-align: center; margin-bottom: 48px; }
+.cta-title { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+
+/* Footer */
+.footer { border-top: 1px solid #e2e8f0; padding: 32px 24px; text-align: center; color: #94a3b8; font-size: 13px; }
+.footer-brand { font-weight: 700; color: #0e7490; margin-bottom: 4px; }
+
+/* Agency profile page */
+.agency-profile-header { display: flex; align-items: center; gap: 16px; margin-bottom: 32px; }
+.agency-profile-name { font-size: 26px; font-weight: 800; }
+.agency-profile-count { font-size: 14px; color: #64748b; margin-top: 4px; }
+.agency-detail-box { margin-bottom: 32px; }
+.agency-detail-box h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+.agency-detail-box p { font-size: 14px; color: #475569; line-height: 1.7; margin-bottom: 16px; }
+.agency-detail-contacts { display: flex; gap: 24px; font-size: 13px; color: #475569; flex-wrap: wrap; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .hero-title { font-size: 30px; }
+  .detail-grid { grid-template-columns: 1fr; }
+  .map-layout { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .nav-links { display: none; }
+}
+@media (max-width: 600px) {
+  .grid-3 { grid-template-columns: 1fr; }
+  .grid-agencies { grid-template-columns: 1fr 1fr; }
+  .filter-row { flex-direction: column; }
+  .agency-detail-contacts { flex-direction: column; gap: 6px; }
+}
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+// ─── STATE ──────────────────────────────────────────────────────────────────
+const state = {
+  lang: 'en',
+  page: 'home',
+  viewMode: 'grid',
+  showFilters: false,
+  favorites: [],
+  compareList: [],
+  selectedId: null,
+  agencyId: null,
+  searchText: '',
+  filters: { type: 'all', deal: 'all', minPrice: '', maxPrice: '', minArea: '', maxArea: '', beds: 'any' }
+};
+
+function setState(updates) {
+  Object.assign(state, updates);
+  render();
+}
+
+// ─── i18n ───────────────────────────────────────────────────────────────────
+const T = {
+  en: { brand:"Nekretnine.me", tagline:"Find your perfect property in Montenegro", search:"Search location…", filters:"Filters", type:"Type", all:"All", apartment:"Apartment", house:"House", land:"Land", commercial:"Commercial", deal:"Deal", sale:"Sale", rent:"Rent", priceRange:"Price range", minPrice:"Min price", maxPrice:"Max price", areaRange:"Area (m²)", minArea:"Min m²", maxArea:"Max m²", bedrooms:"Bedrooms", anyBeds:"Any", apply:"Apply", reset:"Reset", results:"results", map:"Map", list:"List", grid:"Grid", agencies:"Agencies", favorites:"Favorites", compare:"Compare", home:"Home", beds:"beds", baths:"baths", sqm:"m²", perMonth:"/mo", addFav:"Save", removeFav:"Saved", addCompare:"Compare", removeCompare:"In compare", viewDetails:"View details", contactAgency:"Contact agency", listingsCount:"listings", phone:"Phone", email:"Email", website:"Website", aboutAgency:"About", back:"← Back", clearAll:"Clear all", noResults:"No properties match your filters", noFavorites:"No saved properties yet", noCompare:"Add properties to compare", compareProp:"Compare properties", property:"Property", price:"Price", area:"Area", location:"Location", agency:"Agency", lang:"EN", connectCTA:"Are you an agency? Connect with us", heroTitle:"Discover Montenegro Real Estate", heroSub:"Search across 50+ agencies. Buy, rent, or invest in the Adriatic's hidden gem.", featured:"Featured properties", topAgencies:"Top agencies", viewAll:"View all →", close:"Close" },
+  me: { brand:"Nekretnine.me", tagline:"Pronađite idealnu nekretninu u Crnoj Gori", search:"Pretražite lokaciju…", filters:"Filteri", type:"Vrsta", all:"Sve", apartment:"Stan", house:"Kuća", land:"Zemljište", commercial:"Poslovni prostor", deal:"Namjena", sale:"Prodaja", rent:"Izdavanje", priceRange:"Raspon cijene", minPrice:"Min. cijena", maxPrice:"Maks. cijena", areaRange:"Površina (m²)", minArea:"Min. m²", maxArea:"Maks. m²", bedrooms:"Spavaće sobe", anyBeds:"Bilo koji", apply:"Primijeni", reset:"Poništi", results:"rezultata", map:"Mapa", list:"Lista", grid:"Mrežni prikaz", agencies:"Agencije", favorites:"Sačuvano", compare:"Uporedi", home:"Početna", beds:"spavaćih soba", baths:"kupatila", sqm:"m²", perMonth:"/mj", addFav:"Sačuvaj oglas", removeFav:"Sačuvano", addCompare:"Dodaj u poređenje", removeCompare:"U poređenju", viewDetails:"Pogledaj detalje", contactAgency:"Kontaktiraj agenciju", listingsCount:"oglasa", phone:"Telefon", email:"Email", website:"Veb-sajt", aboutAgency:"O agenciji", back:"← Nazad", clearAll:"Obriši sve", noResults:"Nijedna nekretnina ne odgovara izabranim filterima", noFavorites:"Još nema sačuvanih nekretnina", noCompare:"Dodajte nekretnine za poređenje", compareProp:"Poređenje nekretnina", property:"Nekretnina", price:"Cijena", area:"Površina", location:"Lokacija", agency:"Agencija", lang:"ME", connectCTA:"Imate agenciju? Povežite se s nama", heroTitle:"Otkrijte nekretnine u Crnoj Gori", heroSub:"Pretražite ponudu 50+ agencija. Kupujte, iznajmljujte ili investirajte na crnogorskom primorju.", featured:"Izdvojene nekretnine", topAgencies:"Najbolje agencije", viewAll:"Pogledaj sve →", close:"Zatvori" },
+  ru: { brand:"Nekretnine.me", tagline:"Найдите недвижимость мечты в Черногории", search:"Введите локацию…", filters:"Фильтры", type:"Тип недвижимости", all:"Все", apartment:"Квартира", house:"Дом", land:"Участок", commercial:"Коммерческая недвижимость", deal:"Операция", sale:"Продажа", rent:"Аренда", priceRange:"Диапазон цены", minPrice:"Цена от", maxPrice:"Цена до", areaRange:"Площадь (м²)", minArea:"Площадь от", maxArea:"Площадь до", bedrooms:"Спальни", anyBeds:"Любое", apply:"Применить", reset:"Сбросить", results:"результатов", map:"Карта", list:"Список", grid:"Плитка", agencies:"Агентства", favorites:"Сохранённые", compare:"Сравнить", home:"Главная", beds:"спальни", baths:"санузлы", sqm:"м²", perMonth:"/мес", addFav:"Сохранить", removeFav:"Сохранено", addCompare:"В сравнение", removeCompare:"В сравнении", viewDetails:"Подробнее", contactAgency:"Связаться с агентством", listingsCount:"объявлений", phone:"Телефон", email:"Email", website:"Веб-сайт", aboutAgency:"Об агентстве", back:"← Назад", clearAll:"Очистить всё", noResults:"По выбранным фильтрам ничего не найдено", noFavorites:"Пока нет сохранённых объектов", noCompare:"Добавьте объекты для сравнения", compareProp:"Сравнение объектов", property:"Объект", price:"Цена", area:"Площадь", location:"Расположение", agency:"Агентство", lang:"RU", connectCTA:"Вы агентство? Подключайтесь к платформе", heroTitle:"Недвижимость Черногории", heroSub:"Ищите среди предложений 50+ агентств: покупка, аренда и инвестиции на Адриатике.", featured:"Рекомендуемые объекты", topAgencies:"Лучшие агентства", viewAll:"Смотреть все →", close:"Закрыть" }
+};
+
+// ─── DATA ───────────────────────────────────────────────────────────────────
+const AGENCIES = [
+  { id:1, name:"Adriatic Homes", logo:"🏠", color:"#0e7490", listings:48, phone:"+382 67 123 456", email:"info@adriatichomes.me", website:"adriatichomes.me", desc:{ en:"Premium coastal properties in Budva, Kotor and Tivat. Serving international clients since 2010.", me:"Vrhunske nekretnine na primorju u Budvi, Kotoru i Tivtu. Radimo s domaćim i inostranim klijentima od 2010.", ru:"Премиальная недвижимость на побережье Будвы, Котора и Тивата. Работаем с местными и зарубежными клиентами с 2010 года." }},
+  { id:2, name:"Montenegro Invest", logo:"📈", color:"#7c3aed", listings:35, phone:"+382 69 234 567", email:"contact@mne-invest.com", website:"mne-invest.com", desc:{ en:"Investment-grade properties and development projects across Montenegro.", me:"Nekretnine za ulaganje i razvojni projekti širom Crne Gore.", ru:"Инвестиционная недвижимость и девелоперские проекты по всей Черногории." }},
+  { id:3, name:"Boka Bay Realty", logo:"⛵", color:"#0369a1", listings:29, phone:"+382 68 345 678", email:"hello@bokabay.me", website:"bokabay.me", desc:{ en:"Specialists in Boka Bay waterfront living — from historic stone houses to modern marina apartments.", me:"Specijalisti za nekretnine uz more u Boki Kotorskoj — od kamenih kuća do modernih stanova u marinama.", ru:"Эксперты по недвижимости у моря в Бока-Которском заливе — от старинных каменных домов до современных апартаментов у марины." }},
+  { id:4, name:"Capital Estate", logo:"🏛️", color:"#b45309", listings:22, phone:"+382 20 456 789", email:"info@capitalestate.me", website:"capitalestate.me", desc:{ en:"Podgorica's leading agency for residential and commercial real estate.", me:"Vodeća podgorička agencija za stambene i poslovne nekretnine.", ru:"Ведущее агентство Подгорицы по жилой и коммерческой недвижимости." }},
+  { id:5, name:"Lustica Villas", logo:"🌿", color:"#15803d", listings:18, phone:"+382 67 567 890", email:"villas@lustica.me", website:"lustica.me", desc:{ en:"Exclusive villa developments on the Luštica peninsula with sea views.", me:"Ekskluzivni projekti vila na poluostrvu Luštica sa pogledom na more.", ru:"Эксклюзивные виллы на полуострове Луштица с видом на море." }}
+];
+
+const LOCATIONS = [
+  {name:"Budva",lat:42.2914,lng:18.84},{name:"Kotor",lat:42.4247,lng:18.7712},{name:"Tivat",lat:42.4319,lng:18.6968},
+  {name:"Podgorica",lat:42.4304,lng:19.2594},{name:"Herceg Novi",lat:42.4531,lng:18.5375},{name:"Bar",lat:42.0931,lng:19.1003},
+  {name:"Ulcinj",lat:41.9297,lng:19.2064},{name:"Cetinje",lat:42.3931,lng:18.9236},{name:"Nikšić",lat:42.7731,lng:18.9444},
+  {name:"Luštica",lat:42.3878,lng:18.6756}
+];
+
+const IMAGES = [
+  "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&h=400&fit=crop",
+  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=400&fit=crop",
+  "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600&h=400&fit=crop",
+  "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&h=400&fit=crop",
+  "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&h=400&fit=crop",
+  "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&h=400&fit=crop",
+  "https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=600&h=400&fit=crop",
+  "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&h=400&fit=crop"
+];
+
+// Seeded random for consistent data
+let seed = 42;
+function seededRandom() { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
+
+const ALL_LISTINGS = [];
+(function generateListings() {
+  const types = ['apartment','house','land','commercial'];
+  const deals = ['sale','rent'];
+  for (let i = 1; i <= 60; i++) {
+    const type = types[i % 4];
+    const deal = deals[i % 3 === 0 ? 1 : 0];
+    const loc = LOCATIONS[i % LOCATIONS.length];
+    const agency = AGENCIES[i % AGENCIES.length];
+    const beds = type==='land'?0:type==='commercial'?0:Math.ceil(seededRandom()*4);
+    const baths = type==='land'?0:type==='commercial'?Math.ceil(seededRandom()*2):Math.ceil(seededRandom()*3);
+    const area = type==='land'?200+Math.floor(seededRandom()*2000):30+Math.floor(seededRandom()*250);
+    const bp = type==='land'?area*(40+seededRandom()*60):type==='house'?area*(1500+seededRandom()*2500):type==='commercial'?area*(1200+seededRandom()*1800):area*(1800+seededRandom()*2200);
+    const price = deal==='rent'?Math.round(bp/200/50)*50:Math.round(bp/1000)*1000;
+    const titles = {
+      apartment:{en:`Modern apartment in ${loc.name}`,me:`Savremen stan u ${loc.name}`,ru:`Современная квартира в ${loc.name}`},
+      house:{en:`Charming house in ${loc.name}`,me:`Udobna kuća u ${loc.name}`,ru:`Уютный дом в ${loc.name}`},
+      land:{en:`Building plot in ${loc.name}`,me:`Plac za gradnju u ${loc.name}`,ru:`Участок под застройку в ${loc.name}`},
+      commercial:{en:`Commercial space in ${loc.name}`,me:`Poslovni prostor u ${loc.name}`,ru:`Коммерческое помещение в ${loc.name}`}
+    };
+    ALL_LISTINGS.push({
+      id:i, type, deal, title:titles[type], location:loc.name,
+      lat:loc.lat+(seededRandom()-0.5)*0.03, lng:loc.lng+(seededRandom()-0.5)*0.03,
+      price, area, beds, baths, agencyId:agency.id,
+      image:IMAGES[(i-1)%IMAGES.length], featured:i<=6
+    });
+  }
+})();
+
+// ─── HELPERS ────────────────────────────────────────────────────────────────
+function fmt(n) { return n>=1000000?`€${(n/1000000).toFixed(1)}M`:n>=1000?`€${(n/1000).toFixed(0)}K`:`€${n}`; }
+function t() { return T[state.lang]; }
+function esc(s) { const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+function getFiltered() {
+  return ALL_LISTINGS.filter(l => {
+    const s = state.searchText.toLowerCase();
+    if (s && !l.location.toLowerCase().includes(s) && !l.title.en.toLowerCase().includes(s)) return false;
+    if (state.filters.type!=='all' && l.type!==state.filters.type) return false;
+    if (state.filters.deal!=='all' && l.deal!==state.filters.deal) return false;
+    if (state.filters.minPrice && l.price<Number(state.filters.minPrice)) return false;
+    if (state.filters.maxPrice && l.price>Number(state.filters.maxPrice)) return false;
+    if (state.filters.minArea && l.area<Number(state.filters.minArea)) return false;
+    if (state.filters.maxArea && l.area>Number(state.filters.maxArea)) return false;
+    if (state.filters.beds!=='any' && l.beds<Number(state.filters.beds)) return false;
+    return true;
+  });
+}
+
+function toggleFav(id) {
+  const i = state.favorites.indexOf(id);
+  if (i===-1) state.favorites.push(id); else state.favorites.splice(i,1);
+  render();
+}
+function toggleComp(id) {
+  const i = state.compareList.indexOf(id);
+  if (i===-1 && state.compareList.length<4) state.compareList.push(id);
+  else if (i!==-1) state.compareList.splice(i,1);
+  render();
+}
+
+// ─── SVG ICONS ──────────────────────────────────────────────────────────────
+const icons = {
+  heart: (filled) => `<svg width="16" height="16" viewBox="0 0 24 24" fill="${filled?'#ef4444':'none'}" stroke="${filled?'#ef4444':'currentColor'}" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`,
+  scale: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>`,
+  pin: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+  search: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`,
+  filter: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>`,
+  grid: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>`,
+  list: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>`,
+  map: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>`
+};
+
+// ─── MAP (Mercator projection) ──────────────────────────────────────────────
+function projectMerc(lat, lng) {
+  const W=600,H=500, cx=19.0, cy=42.5, scale=12000;
+  const x = W/2 + (lng-cx)*scale*Math.PI/180;
+  const latRad = lat*Math.PI/180;
+  const cyRad = cy*Math.PI/180;
+  const y = H/2 - scale*(Math.log(Math.tan(Math.PI/4+latRad/2))-Math.log(Math.tan(Math.PI/4+cyRad/2)));
+  return [x,y];
+}
+
+function renderMap(listings, selectedId) {
+  const W=600,H=500;
+  let svg = `<svg viewBox="0 0 ${W} ${H}"><rect width="${W}" height="${H}" fill="#dbeafe"/>`;
+  svg += `<text x="80" y="${H-30}" fill="#93c5fd" font-size="14" font-family="system-ui" opacity="0.7">Adriatic Sea</text>`;
+  // Grid
+  [18,18.5,19,19.5,20].forEach(lng => { const [x]=projectMerc(42.5,lng); svg+=`<line x1="${x}" y1="0" x2="${x}" y2="${H}" stroke="#bfdbfe" stroke-width="0.5"/>`; });
+  [42,42.25,42.5,42.75,43].forEach(lat => { const [,y]=projectMerc(lat,19); svg+=`<line x1="0" y1="${y}" x2="${W}" y2="${y}" stroke="#bfdbfe" stroke-width="0.5"/>`; });
+  // Cities
+  LOCATIONS.forEach(loc => {
+    const [x,y]=projectMerc(loc.lat,loc.lng);
+    svg+=`<circle cx="${x}" cy="${y}" r="3" fill="#64748b" opacity="0.3"/><text x="${x+6}" y="${y+4}" fill="#64748b" font-size="10" font-family="system-ui">${loc.name}</text>`;
+  });
+  // Pins
+  listings.forEach(l => {
+    const [x,y]=projectMerc(l.lat,l.lng);
+    const sel = l.id===selectedId;
+    const col = l.deal==='rent'?'#7c3aed':'#0e7490';
+    svg+=`<circle cx="${x}" cy="${y}" r="${sel?10:6}" fill="${col}" opacity="${sel?1:0.8}" stroke="#fff" stroke-width="${sel?2.5:1.5}" style="cursor:pointer" onclick="setState({selectedId:${l.id}})"/>`;
+    if (sel) svg+=`<text x="${x}" y="${y-14}" text-anchor="middle" fill="#0f172a" font-size="11" font-weight="600" font-family="system-ui">${fmt(l.price)}</text>`;
+  });
+  svg += `</svg>`;
+  return `<div class="map-container">${svg}<div class="map-legend"><span style="display:flex;align-items:center;gap:4px"><span class="map-legend-dot" style="background:#0e7490"></span> ${t().sale}</span><span style="display:flex;align-items:center;gap:4px"><span class="map-legend-dot" style="background:#7c3aed"></span> ${t().rent}</span></div></div>`;
+}
+
+// ─── CARD HTML ──────────────────────────────────────────────────────────────
+function cardHTML(l, compact) {
+  const ag = AGENCIES.find(a=>a.id===l.agencyId);
+  const isFav = state.favorites.includes(l.id);
+  const isComp = state.compareList.includes(l.id);
+  const tx = t();
+  return `
+    <div class="card${compact?' compact':''}" onclick="setState({selectedId:${l.id},page:'detail'})">
+      <div class="card-image" style="background-image:url(${l.image})">
+        <div class="card-badges">
+          <span class="badge-deal ${l.deal}">${tx[l.deal]}</span>
+          <span class="badge-type">${tx[l.type]}</span>
+        </div>
+        <div class="card-actions">
+          <button class="action-btn" onclick="event.stopPropagation();toggleFav(${l.id})">${icons.heart(isFav)}</button>
+          <button class="action-btn${isComp?' comp-active':''}" onclick="event.stopPropagation();toggleComp(${l.id})">${icons.scale}</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-price">${fmt(l.price)}${l.deal==='rent'?`<span>${tx.perMonth}</span>`:''}</div>
+        <div class="card-title">${esc(l.title[state.lang])}</div>
+        <div class="card-location">${icons.pin} ${esc(l.location)}</div>
+        <div class="card-stats">
+          ${l.beds>0?`<span>${l.beds} ${tx.beds}</span>`:''}
+          ${l.baths>0?`<span>${l.baths} ${tx.baths}</span>`:''}
+          <span>${l.area} ${tx.sqm}</span>
+        </div>
+        <div class="card-agency"><span class="agency-dot" style="background:${ag.color}15">${ag.logo}</span>${esc(ag.name)}</div>
+      </div>
+    </div>`;
+}
+
+// ─── PAGE RENDERERS ─────────────────────────────────────────────────────────
+function renderHome() {
+  const tx = t();
+  const featured = ALL_LISTINGS.filter(l=>l.featured);
+  return `
+    <div class="hero">
+      <div class="hero-title">${tx.heroTitle}</div>
+      <div class="hero-sub">${tx.heroSub}</div>
+      <div class="search-bar">
+        <input class="search-input" placeholder="${tx.search}" value="${esc(state.searchText)}" oninput="state.searchText=this.value" onkeydown="if(event.key==='Enter')setState({page:'listings'})">
+        <button class="search-btn" onclick="setState({page:'listings'})">${icons.search} ${tx.filters}</button>
+      </div>
+    </div>
+    <div class="container">
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title">${tx.featured}</div>
+          <button class="view-all-btn" onclick="setState({page:'listings'})">${tx.viewAll}</button>
+        </div>
+        <div class="grid-3">${featured.map(l=>cardHTML(l)).join('')}</div>
+      </div>
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title">${tx.topAgencies}</div>
+          <button class="view-all-btn" onclick="setState({page:'agencies'})">${tx.viewAll}</button>
+        </div>
+        <div class="grid-agencies">
+          ${AGENCIES.map(a=>`
+            <div class="agency-card" onclick="setState({agencyId:${a.id},page:'agency'})">
+              <div class="agency-badge" style="background:${a.color}15">${a.logo}</div>
+              <div style="font-weight:600;font-size:15px">${esc(a.name)}</div>
+              <div style="font-size:12px;color:#64748b;margin-top:4px">${a.listings} ${tx.listingsCount}</div>
+            </div>`).join('')}
+        </div>
+      </div>
+      <div class="cta-banner">
+        <div class="cta-title">${tx.connectCTA}</div>
+        <button class="btn btn-primary" style="padding:12px 32px;font-size:15px">${tx.contactAgency}</button>
+      </div>
+    </div>`;
+}
+
+function renderListings() {
+  const tx = t();
+  const filtered = getFiltered();
+  const vm = state.viewMode;
+
+  let filtersHTML = '';
+  if (state.showFilters) {
+    filtersHTML = `<div class="filter-panel"><div class="filter-row">
+      <div class="filter-group"><div class="filter-label">${tx.type}</div><select class="filter-select" onchange="state.filters.type=this.value;render()"><option value="all"${state.filters.type==='all'?' selected':''}>${tx.all}</option><option value="apartment"${state.filters.type==='apartment'?' selected':''}>${tx.apartment}</option><option value="house"${state.filters.type==='house'?' selected':''}>${tx.house}</option><option value="land"${state.filters.type==='land'?' selected':''}>${tx.land}</option><option value="commercial"${state.filters.type==='commercial'?' selected':''}>${tx.commercial}</option></select></div>
+      <div class="filter-group"><div class="filter-label">${tx.deal}</div><select class="filter-select" onchange="state.filters.deal=this.value;render()"><option value="all"${state.filters.deal==='all'?' selected':''}>${tx.all}</option><option value="sale"${state.filters.deal==='sale'?' selected':''}>${tx.sale}</option><option value="rent"${state.filters.deal==='rent'?' selected':''}>${tx.rent}</option></select></div>
+      <div class="filter-group"><div class="filter-label">${tx.minPrice}</div><input class="filter-input" type="number" placeholder="€" value="${state.filters.minPrice}" onchange="state.filters.minPrice=this.value;render()"></div>
+      <div class="filter-group"><div class="filter-label">${tx.maxPrice}</div><input class="filter-input" type="number" placeholder="€" value="${state.filters.maxPrice}" onchange="state.filters.maxPrice=this.value;render()"></div>
+      <div class="filter-group"><div class="filter-label">${tx.minArea}</div><input class="filter-input" type="number" placeholder="m²" value="${state.filters.minArea}" onchange="state.filters.minArea=this.value;render()"></div>
+      <div class="filter-group"><div class="filter-label">${tx.maxArea}</div><input class="filter-input" type="number" placeholder="m²" value="${state.filters.maxArea}" onchange="state.filters.maxArea=this.value;render()"></div>
+      <div class="filter-group"><div class="filter-label">${tx.bedrooms}</div><select class="filter-select" onchange="state.filters.beds=this.value;render()"><option value="any"${state.filters.beds==='any'?' selected':''}>${tx.anyBeds}</option><option value="1"${state.filters.beds==='1'?' selected':''}>1+</option><option value="2"${state.filters.beds==='2'?' selected':''}>2+</option><option value="3"${state.filters.beds==='3'?' selected':''}>3+</option><option value="4"${state.filters.beds==='4'?' selected':''}>4+</option></select></div>
+      <button class="btn btn-ghost" onclick="state.filters={type:'all',deal:'all',minPrice:'',maxPrice:'',minArea:'',maxArea:'',beds:'any'};render()">${tx.reset}</button>
+    </div></div>`;
+  }
+
+  let contentHTML = '';
+  if (vm === 'map') {
+    const sideCards = (state.selectedId ? filtered.filter(l=>l.id===state.selectedId) : filtered.slice(0,10)).map(l=>cardHTML(l,true)).join('');
+    contentHTML = `<div class="map-layout">${renderMap(filtered, state.selectedId)}<div class="map-sidebar">${sideCards}</div></div>`;
+  } else if (filtered.length === 0) {
+    contentHTML = `<div class="empty-state">${tx.noResults}</div>`;
+  } else {
+    const cards = filtered.map(l=>cardHTML(l, vm==='list')).join('');
+    contentHTML = vm==='grid' ? `<div class="grid-3">${cards}</div>` : `<div style="display:flex;flex-direction:column;gap:12px">${cards}</div>`;
+  }
+
+  return `<div class="container" style="padding-top:24px;padding-bottom:48px">
+    <div class="listings-search">
+      <div class="listings-search-wrap">
+        <input class="search-input" placeholder="${tx.search}" value="${esc(state.searchText)}" oninput="state.searchText=this.value;render()">
+        <span class="listings-search-icon">${icons.search}</span>
+      </div>
+      <button class="btn ${state.showFilters?'btn-primary':'btn-default'} filter-toggle" onclick="setState({showFilters:!state.showFilters})">${icons.filter} ${tx.filters}</button>
+    </div>
+    ${filtersHTML}
+    <div class="toolbar">
+      <div class="result-count"><strong>${filtered.length}</strong> ${tx.results}</div>
+      <div class="view-toggle">
+        <button class="view-btn${vm==='grid'?' active':''}" onclick="setState({viewMode:'grid'})">${icons.grid}</button>
+        <button class="view-btn${vm==='list'?' active':''}" onclick="setState({viewMode:'list'})">${icons.list}</button>
+        <button class="view-btn${vm==='map'?' active':''}" onclick="setState({viewMode:'map'})">${icons.map}</button>
+      </div>
+    </div>
+    ${contentHTML}
+  </div>`;
+}
+
+function renderDetail() {
+  const l = ALL_LISTINGS.find(x=>x.id===state.selectedId);
+  if (!l) return '';
+  const tx = t();
+  const ag = AGENCIES.find(a=>a.id===l.agencyId);
+  const isFav = state.favorites.includes(l.id);
+  const isComp = state.compareList.includes(l.id);
+
+  return `<div class="container" style="padding-top:24px;padding-bottom:48px">
+    <button class="detail-back" onclick="setState({page:'listings'})">${tx.back}</button>
+    <img class="detail-image" src="${l.image}" alt="">
+    <div class="detail-grid">
+      <div>
+        <div class="detail-badges">
+          <span class="detail-badge ${l.deal}">${tx[l.deal]}</span>
+          <span class="detail-badge type">${tx[l.type]}</span>
+        </div>
+        <div class="detail-title">${esc(l.title[state.lang])}</div>
+        <div class="detail-location">${icons.pin} ${esc(l.location)}, Montenegro</div>
+        <div class="detail-price">${fmt(l.price)}${l.deal==='rent'?`<span>${tx.perMonth}</span>`:''}</div>
+        <div class="stats-grid">
+          ${l.beds>0?`<div class="stat-box"><div class="stat-val">${l.beds}</div><div class="stat-label">${tx.beds}</div></div>`:''}
+          ${l.baths>0?`<div class="stat-box"><div class="stat-val">${l.baths}</div><div class="stat-label">${tx.baths}</div></div>`:''}
+          <div class="stat-box"><div class="stat-val">${l.area}</div><div class="stat-label">${tx.sqm}</div></div>
+          <div class="stat-box"><div class="stat-val">€${l.area>0?Math.round(l.price/l.area):'—'}</div><div class="stat-label">€/${tx.sqm}</div></div>
+        </div>
+        ${renderMap([l], l.id)}
+      </div>
+      <div>
+        <div class="agency-box">
+          <div class="agency-header">
+            <div class="agency-badge" style="background:${ag.color}15;font-size:24px">${ag.logo}</div>
+            <div><div style="font-weight:700;font-size:16px">${esc(ag.name)}</div><div style="font-size:12px;color:#64748b">${ag.listings} ${tx.listingsCount}</div></div>
+          </div>
+          <div class="agency-desc">${esc(ag.desc[state.lang])}</div>
+          <div class="agency-contact"><div>${tx.phone}: ${ag.phone}</div><div>${tx.email}: ${ag.email}</div></div>
+          <button class="contact-btn">${tx.contactAgency}</button>
+          <button class="contact-btn secondary" onclick="event.stopPropagation();setState({agencyId:${ag.id},page:'agency'})">${tx.viewAll} ${tx.listingsCount}</button>
+        </div>
+        <div class="detail-actions">
+          <button class="btn ${isFav?'btn-primary':'btn-default'}" onclick="toggleFav(${l.id})">${icons.heart(isFav)} ${isFav?tx.removeFav:tx.addFav}</button>
+          <button class="btn ${isComp?'btn-primary':'btn-default'}" onclick="toggleComp(${l.id})">${icons.scale} ${isComp?tx.removeCompare:tx.addCompare}</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderAgencies() {
+  const tx = t();
+  return `<div class="container" style="padding-top:24px;padding-bottom:48px">
+    <h2 style="font-size:24px;font-weight:700;margin-bottom:24px">${tx.agencies}</h2>
+    <div class="grid-3">
+      ${AGENCIES.map(a=>`
+        <div class="agency-card" style="padding:24px" onclick="setState({agencyId:${a.id},page:'agency'})">
+          <div class="agency-header">
+            <div class="agency-badge" style="background:${a.color}15;font-size:24px">${a.logo}</div>
+            <div><div style="font-weight:700;font-size:17px">${esc(a.name)}</div><div style="font-size:12px;color:#64748b">${a.listings} ${tx.listingsCount}</div></div>
+          </div>
+          <div style="font-size:13px;color:#475569;line-height:1.6">${esc(a.desc[state.lang])}</div>
+          <div style="margin-top:14px;font-size:12px;color:#64748b"><div>${a.phone}</div><div>${a.email}</div></div>
+        </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function renderAgencyPage() {
+  const a = AGENCIES.find(x=>x.id===state.agencyId);
+  if (!a) return '';
+  const tx = t();
+  const listings = ALL_LISTINGS.filter(l=>l.agencyId===a.id);
+  return `<div class="container" style="padding-top:24px;padding-bottom:48px">
+    <button class="detail-back" onclick="setState({page:'agencies'})">${tx.back}</button>
+    <div class="agency-profile-header">
+      <div class="agency-badge lg" style="background:${a.color}15">${a.logo}</div>
+      <div><div class="agency-profile-name">${esc(a.name)}</div><div class="agency-profile-count">${a.listings} ${tx.listingsCount}</div></div>
+    </div>
+    <div class="agency-box agency-detail-box">
+      <h3>${tx.aboutAgency}</h3>
+      <p>${esc(a.desc[state.lang])}</p>
+      <div class="agency-detail-contacts">
+        <span>${tx.phone}: ${a.phone}</span>
+        <span>${tx.email}: ${a.email}</span>
+        <span>${tx.website}: ${a.website}</span>
+      </div>
+    </div>
+    <div class="grid-3">${listings.map(l=>cardHTML(l)).join('')}</div>
+  </div>`;
+}
+
+function renderFavorites() {
+  const tx = t();
+  const favs = ALL_LISTINGS.filter(l=>state.favorites.includes(l.id));
+  return `<div class="container" style="padding-top:24px;padding-bottom:48px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+      <h2 style="font-size:24px;font-weight:700;margin:0">${tx.favorites} (${favs.length})</h2>
+      ${favs.length>0?`<button class="btn btn-ghost" onclick="state.favorites=[];render()">${tx.clearAll}</button>`:''}
+    </div>
+    ${favs.length===0?`<div class="empty-state">${tx.noFavorites}</div>`:`<div class="grid-3">${favs.map(l=>cardHTML(l)).join('')}</div>`}
+  </div>`;
+}
+
+function renderCompare() {
+  const tx = t();
+  const items = ALL_LISTINGS.filter(l=>state.compareList.includes(l.id));
+  if (items.length===0) return `<div class="container" style="padding-top:24px;padding-bottom:48px">
+    <h2 style="font-size:24px;font-weight:700;margin-bottom:24px">${tx.compareProp} (0/4)</h2>
+    <div class="empty-state">${tx.noCompare}</div></div>`;
+
+  const rows = [
+    [tx.price, l=>`<strong>${fmt(l.price)}${l.deal==='rent'?tx.perMonth:''}</strong>`],
+    [tx.type, l=>tx[l.type]],
+    [tx.deal, l=>tx[l.deal]],
+    [tx.location, l=>l.location],
+    [tx.area, l=>`${l.area} ${tx.sqm}`],
+    [tx.beds, l=>l.beds||'—'],
+    [tx.baths, l=>l.baths||'—'],
+    [`€/${tx.sqm}`, l=>l.area>0?`€${Math.round(l.price/l.area)}`:'—'],
+    [tx.agency, l=>AGENCIES.find(a=>a.id===l.agencyId)?.name||'']
+  ];
+
+  return `<div class="container" style="padding-top:24px;padding-bottom:48px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+      <h2 style="font-size:24px;font-weight:700;margin:0">${tx.compareProp} (${items.length}/4)</h2>
+      <button class="btn btn-ghost" onclick="state.compareList=[];render()">${tx.clearAll}</button>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="compare-table">
+        <thead><tr><th>${tx.property}</th>${items.map(l=>`<th style="min-width:180px"><img class="compare-img" src="${l.image}" alt=""><div class="compare-name">${esc(l.title[state.lang])}</div></th>`).join('')}</tr></thead>
+        <tbody>${rows.map(([label,fn])=>`<tr><td>${label}</td>${items.map(l=>`<td>${fn(l)}</td>`).join('')}</tr>`).join('')}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+
+// ─── NAV ────────────────────────────────────────────────────────────────────
+function renderNav() {
+  const tx = t();
+  const p = state.page;
+  const favCount = state.favorites.length;
+  const compCount = state.compareList.length;
+  return `<nav class="nav">
+    <div style="display:flex;align-items:center;gap:32px">
+      <div class="nav-brand" onclick="setState({page:'home'})">${tx.brand}</div>
+      <div class="nav-links">
+        <button class="nav-link${p==='home'?' active':''}" onclick="setState({page:'home'})">${tx.home}</button>
+        <button class="nav-link${p==='listings'?' active':''}" onclick="setState({page:'listings'})">${tx.search.replace('…','')}</button>
+        <button class="nav-link${p==='agencies'||p==='agency'?' active':''}" onclick="setState({page:'agencies'})">${tx.agencies}</button>
+        <button class="nav-link${p==='favorites'?' active':''}" onclick="setState({page:'favorites'})">${tx.favorites}${favCount>0?` (${favCount})`:''}</button>
+        <button class="nav-link${p==='compare'?' active':''}" onclick="setState({page:'compare'})">${tx.compare}${compCount>0?` (${compCount})`:''}</button>
+      </div>
+    </div>
+    <div style="display:flex;gap:4px">
+      <button class="lang-btn${state.lang==='en'?' active':''}" onclick="setState({lang:'en'})">EN</button>
+      <button class="lang-btn${state.lang==='me'?' active':''}" onclick="setState({lang:'me'})">ME</button>
+      <button class="lang-btn${state.lang==='ru'?' active':''}" onclick="setState({lang:'ru'})">RU</button>
+    </div>
+  </nav>`;
+}
+
+function renderFooter() {
+  const tx = t();
+  return `<div class="footer"><div class="footer-brand">${tx.brand}</div><div>Montenegro's leading real estate platform — connecting buyers with trusted agencies</div><div style="margin-top:8px">© 2026 Nekretnine.me — All rights reserved</div></div>`;
+}
+
+// ─── MAIN RENDER ────────────────────────────────────────────────────────────
+function render() {
+  let pageHTML = '';
+  switch(state.page) {
+    case 'home': pageHTML = renderHome(); break;
+    case 'listings': pageHTML = renderListings(); break;
+    case 'detail': pageHTML = renderDetail(); break;
+    case 'agencies': pageHTML = renderAgencies(); break;
+    case 'agency': pageHTML = renderAgencyPage(); break;
+    case 'favorites': pageHTML = renderFavorites(); break;
+    case 'compare': pageHTML = renderCompare(); break;
+  }
+  document.getElementById('app').innerHTML = renderNav() + pageHTML + renderFooter();
+  window.scrollTo(0,0);
+}
+
+// Initial render
+render();
+</script>
+</body>
+</html>

@@ -23,6 +23,13 @@
 # misc
 .DS_Store
 *.pem
+*.log
+.idea/
+.vscode/
+/tmp/
+
+# Claude Code per-user settings (launch.json is shared)
+.claude/settings.local.json
 
 # debug
 npm-debug.log*
@@ -32,6 +39,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
